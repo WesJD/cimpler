@@ -19,7 +19,7 @@ options = {
 },
 postBuild = {
    ref:"b/master",
-   repository:{url:"http"},
+   repository:{full_name:"user/repo"},
    after: commit
 };
 
@@ -59,7 +59,7 @@ describe("Github plugin", function() {
 
          var sanitizedBuild = _.pick(build, 'repo', 'commit', 'branch', 'status')
          assert.deepEqual(sanitizedBuild, {
-            repo:    'http',
+            repo:    'github.com/user/repo',
             commit:   commit,
             branch:  'master',
             status:  'pending'

@@ -27,18 +27,29 @@ exports.init = function(config, cimpler) {
 function extractBuildInfo(requestBody) {
    var info = JSON.parse(requestBody.payload);
 
+   // If this is a pull_request event, we only care about ones that change the
+   // HEAD commit (opened and synchronize)
+   if (info.action &&
+       info.action != 'synchronize' &&
+       info.action != 'opened') {
+      return;
+   }
+
    // Filter out notifications about annotated tags
    if (info.ref.indexOf('refs/tags/') == 0) {
       return null;
    }
 
-   // ref: "refs/heads/master"
-   var branch = info.ref.split('/').pop();
+   // If we are using the "pull_request" github event type the structure of the
+   // payload is a bitt different, so there are several ... || ... bits here.
+
+   // ref: "refs/heads/master" or just "master"
+   var branch = (info.ref || info.pull_request.head.ref).split('/').pop();
 
    // Build info structure
    return {
-     repo   : info.repository.url,
-     commit : info.after,
+     repo   : "github.com" + '/' + info.repository.full_name,
+     commit : info.after || info.pull_request.head.sha,
      branch : branch,
      status : 'pending'
    };
