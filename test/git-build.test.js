@@ -451,11 +451,15 @@ describe("git-build plugin", function() {
     * successfully.
     */
    function repeatTillSuccessful(cmd, callback) {
+      console.log("Repeating command till successful: " + cmd);
       function tryIt() {
+         console.log("running: " + cmd);
          childProcess.exec(cmd, {}, function(err, stdout, stderr) {
             if (err) {
+               console.log("unsuccessful: " + stdout + " " + stderr);
                setTimeout(tryIt, 250);
             } else {
+               console.log("successful: " + stdout + " " + stderr);
                callback(stdout.toString().trim());
             }
          });
