@@ -33,7 +33,7 @@ function buildConsumer(config, cimpler, repoPath) {
          },
          timeout: config.timeout || 0
       },
-      killChildrenOnExit = "trap '[ $(jobs -p) ] && kill $(jobs -p)' EXIT",
+      killChildrenOnExit = "trap '[ -n $(jobs -p) ] && kill $(jobs -p)' EXIT",
       cdToRepo = 'set -v; set -x; cd "' + repoPath + '"';
 
       for(var key in process.env) {
