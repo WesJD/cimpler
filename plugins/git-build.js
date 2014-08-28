@@ -82,6 +82,7 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
+            console.log("killing fetch via SIGINT");
             fetching.kill('SIGINT');
             fetching.stdout.destroy();
             fetching.stderr.destroy();
@@ -135,6 +136,7 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
+            console.log("killing merge via SIGINT");
             merging.kill('SIGINT');
             merging.stdout.destroy();
             merging.stderr.destroy();
@@ -160,7 +162,8 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
-            proc.kill('SIGTERM');
+            console.log("killing build via SIGINT");
+            proc.kill('SIGINT');
             proc.stdout.destroy();
             proc.stderr.destroy();
          });
