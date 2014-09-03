@@ -129,6 +129,7 @@ function buildConsumer(config, cimpler, repoPath) {
             }
 
 
+            logger.info(stdout);
             logger.info(id(build) + " -- " + message);
             logFile().write(stdout);
 
@@ -164,6 +165,7 @@ function buildConsumer(config, cimpler, repoPath) {
          setAbort(build, function() {
             logger.info("killing build via SIGTERM");
             proc.kill('SIGTERM');
+            proc.kill('SIGINT');
             proc.stdout.destroy();
             proc.stderr.destroy();
          });

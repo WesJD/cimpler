@@ -521,7 +521,7 @@ describe("git-build plugin", function() {
 function newBuild(branch) {
    return {
       letter: 'A',
-      repo: "doesn't matter",
+      repo: "doesntmatter",
       branch: branch
    };
 }
