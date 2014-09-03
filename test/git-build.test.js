@@ -1,8 +1,9 @@
 var Cimpler      = require('../lib/cimpler'),
     util         = require('util'),
     fs           = require('fs'),
-    assert       = require('assert');
+    assert       = require('assert'),
     expect       = require("./expect"),
+    logger       = require('log4js').getLogger(),
     childProcess = require('child_process'),
     testRepoSource   = __dirname + "/../fixtures/repo/",
     buildLogsPath    = "/tmp/cimpler-test-logs/",
@@ -396,6 +397,7 @@ describe("git-build plugin", function() {
          repeatTillSuccessful(findSleep, function(stdout) {
             cimpler.emit('buildAborted', build);
          });
+         logger.info("test - Adding build");
          cimpler.addBuild(build);
 
          function finished() {
