@@ -82,8 +82,8 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
-            logger.info("killing fetch via SIGINT");
-            fetching.kill('SIGINT');
+            logger.info("killing fetch via SIGTERM");
+            fetching.kill('SIGTERM');
             fetching.stdout.destroy();
             fetching.stderr.destroy();
          });
@@ -136,8 +136,8 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
-            logger.info("killing merge via SIGINT");
-            merging.kill('SIGINT');
+            logger.info("killing merge via SIGTERM");
+            merging.kill('SIGTERM');
             merging.stdout.destroy();
             merging.stderr.destroy();
          });
@@ -162,8 +162,8 @@ function buildConsumer(config, cimpler, repoPath) {
          });
 
          setAbort(build, function() {
-            logger.info("killing build via SIGINT");
-            proc.kill('SIGINT');
+            logger.info("killing build via SIGTERM");
+            proc.kill('SIGTERM');
             proc.stdout.destroy();
             proc.stderr.destroy();
          });
@@ -276,7 +276,7 @@ function setAbort(build, callback) {
       build._control = {};
    } 
    build._control.abortGitBuild = function() {
-      logger.info(id(build) + " -- Build Aborted");
+      logger.info(id(build) + " -- Aborting Build");
       callback();
    }
 }
