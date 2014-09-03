@@ -383,7 +383,7 @@ describe("git-build plugin", function() {
        *  - Abort the build
        *  - Wait till it disappears from the process list (Success!)
        */
-      it("should kill all child processes", function(done) {
+      it.only("should kill all child processes", function(done) {
          var sleepLength = Math.floor((1+Math.random()) * 100000);
          var cimpler = newCimpler("sleep 1" + sleepLength);
          var findSleep = 'ps aux | grep [1]' + sleepLength;
