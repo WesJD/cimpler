@@ -1,45 +1,48 @@
-var logger     = require('log4js').getLogger();
+var logger = require('log4js').getLogger();
 
 exports.init = function(config, cimpler) {
-   /**
-    * Listen for post-receive hooks
-    */
-   cimpler.registerMiddleware('/github', function(req, res, next) {
-      // We only care about POSTs to "/github"
-      if (req.method !== 'POST' || req.url !== '/') {
-         return next();
-      }
+  /**
+   * Listen for post-receive hooks
+   */
+  cimpler.registerMiddleware('/github', function(req, res, next) {
+    // We only care about POSTs to "/github"
+    if(req.method !== 'POST' || req.url !== '/') {
+      return next();
+    }
 
-      try {
-         var build = extractBuildInfo(req.body);
-         if (build) {
-            cimpler.addBuild(build);
-         }
-      } catch (e) {
-         console.error("Bad Request");
-         console.error(e.stack);
+    try {
+      var build = extractBuildInfo(req.body);
+      if(build) {
+        var allowedBranches = config.allowedBranches;
+        if(!allowedBranches || allowedBranches.indexOf(build.branch) != -1) {
+          cimpler.addBuild(build);
+        }
       }
-      res.end();
-   });
+    } catch(e) {
+      console.error("Bad Request");
+      console.error(e.stack);
+    }
+    res.end();
+  });
 };
 
 function extractBuildInfo(requestBody) {
-   var info = JSON.parse(requestBody.payload);
+  var info = JSON.parse(requestBody.payload);
 
-   // Filter out notifications about annotated tags
-   if (info.ref.indexOf('refs/tags/') == 0) {
-      return null;
-   }
+  // Filter out notifications about annotated tags
+  if(info.ref.indexOf('refs/tags/') == 0) {
+    return null;
+  }
 
-   // ref: "refs/heads/master"
-   var branch = info.ref.split('/').pop();
+  // ref: "refs/heads/master"
+  var branch = info.ref.split('/').pop();
 
-   // Build info structure
-   return {
-     repo   : info.repository.url,
-     commit : info.after,
-     branch : branch,
-     status : 'pending'
-   };
+  // Build info structure
+  return {
+    repo: info.repository.url,
+    commit: info.after,
+    branch: branch,
+    status: 'pending'
+  };
 }
 

@@ -49,7 +49,14 @@ module.exports = {
        *
        * Listens to POSTs with urls === "/github" on httpPort
        */
-      github: true,
+      github: {
+          /**
+           * Which branches are allowed to be compiled
+           * 
+           * Leaving empty or undefined results in all branches being allowed
+           */
+          allowedBranches: []
+      },
 
       /**
        * Automatically marks all builds as successful (for testing)
