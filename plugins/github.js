@@ -14,7 +14,9 @@ exports.init = function(config, cimpler) {
       var build = extractBuildInfo(req.body);
       if(build) {
         var allowedBranches = config.allowedBranches;
-        if(!allowedBranches || allowedBranches.indexOf(build.branch) != -1) {
+        if(!allowedBranches || 
+            allowedBranches.length == 0 ||
+            allowedBranches.indexOf(build.branch) != -1) {
           cimpler.addBuild(build);
         }
       }
